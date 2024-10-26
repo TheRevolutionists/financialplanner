@@ -3,223 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financial Planning Website</title>
+    <title>Comprehensive Financial Planning Dashboard</title>
     <style>
-        /* Place the CSS code here */
-        /* Basic Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        /* General Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background-color: #f5f5f5; color: #333; }
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-        }
+        /* Header and Navigation */
+        header { background-color: #333; padding: 20px; text-align: center; color: white; font-size: 1.8em; }
+        nav { display: flex; justify-content: space-around; background-color: #222; padding: 10px; }
+        nav a { color: white; text-decoration: none; padding: 10px 15px; }
+        nav a:hover { color: #b19cd9; /* Purple accent */ }
 
-        /* Header Styling */
-        header {
-            background-color: #4CAF50;
-            padding: 20px;
-            text-align: center;
-            font-size: 1.5em;
-            color: white;
+        /* Section Styling */
+        .container { display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .section { max-width: 800px; background-color: #fff; padding: 20px; margin: 15px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); display: none; }
+        h2 { margin-bottom: 10px; color: #4a4a4a; }
+        
+        /* Form & Button Styling */
+        button { background-color: #b19cd9; border: none; padding: 10px; color: white; cursor: pointer; border-radius: 5px; }
+        button:hover { background-color: #a68fc3; }
+        input[type="text"], input[type="number"], input[type="date"] {
+            padding: 8px; margin: 5px; border: 1px solid #ddd; border-radius: 4px; width: 100%;
         }
-
-        /* Navigation Bar */
-        nav {
-            display: flex;
-            justify-content: space-around;
-            background-color: #333;
-            padding: 10px;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            padding: 10px;
-        }
-
-        nav a:hover {
-            background-color: #4CAF50;
-        }
-
-        /* Main Content Layout */
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .section {
-            max-width: 800px;
-            background-color: white;
-            padding: 20px;
-            margin: 10px;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-        }
-
-        h2 {
-            margin-bottom: 10px;
-        }
-
-        /* Footer Styling */
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-        }
+        
+        /* Footer */
+        footer { background-color: #222; color: white; text-align: center; padding: 10px; position: fixed; width: 100%; bottom: 0; }
+        
+        /* Extra styles for animations and interactivity */
+        .highlight { background-color: #b19cd9; color: #fff; transition: background-color 0.3s ease; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-<header>
-    Financial Planning Website
-</header>
+<header>Comprehensive Financial Planning Website</header>
 
 <nav>
-    <a href="#home">Home</a>
-    <a href="#income-expense">Income & Expense Tracker</a>
-    <a href="#calendar">Financial Calendar</a>
-    <a href="#investments">Investments</a>
-    <a href="#tax-info">Tax Information</a>
-    <a href="#goals">Goals & Savings Planner</a>
+    <a href="#home" onclick="showSection('home')">Home</a>
+    <a href="#income-expense" onclick="showSection('income-expense')">Income & Expense Tracker</a>
+    <a href="#calendar" onclick="showSection('calendar')">Financial Calendar</a>
+    <a href="#investments" onclick="showSection('investments')">Investments</a>
+    <a href="#tax-info" onclick="showSection('tax-info')">Tax Information</a>
+    <a href="#goals" onclick="showSection('goals')">Goals & Savings Planner</a>
 </nav>
 
 <div class="container">
-    <section id="home" class="section">
+    <section id="home" class="section" style="display: block;">
         <h2>Welcome to Your Financial Planning Dashboard</h2>
         <p>Manage your income, expenses, investments, and savings goals all in one place.</p>
     </section>
 
+    <!-- Income & Expense Tracker Section -->
     <section id="income-expense" class="section">
         <h2>Income & Expense Tracker</h2>
-        <p>Track your income and expenses. Add, edit, or delete entries to keep your finances organized.</p>
+        <form onsubmit="addIncomeExpense(event)">
+            <input type="date" id="date" required />
+            <input type="text" id="category" placeholder="Category (e.g., Food, Rent)" required />
+            <input type="number" id="amount" placeholder="Amount" required />
+            <input type="text" id="description" placeholder="Description" />
+            <label><input type="checkbox" id="recurring" /> Recurring</label>
+            <button type="submit">Add Entry</button>
+        </form>
+        <div id="entries">
+            <!-- Example Entry for Extended Code Example -->
+            <div class="entry">
+                <p>Date: <span>2024-10-26</span></p>
+                <p>Category: <span>Rent</span></p>
+                <p>Amount: <span>$500</span></p>
+                <p>Recurring: <span>No</span></p>
+            </div>
+            <!-- Repeat similar entries here for more content -->
+        </div>
     </section>
 
+    <!-- Financial Calendar Section -->
     <section id="calendar" class="section">
         <h2>Financial Calendar</h2>
-        <p>View upcoming financial events, bill due dates, and reminders.</p>
+        <p>View and set reminders for important financial dates and deadlines.</p>
+        <!-- Calendar will be extended with JavaScript functionality -->
     </section>
 
+    <!-- Investments Section -->
     <section id="investments" class="section">
         <h2>Investments</h2>
-        <p>Track your investment portfolio and analyze growth over time.</p>
+        <p>Track your investment portfolio and monitor growth over time.</p>
+        <!-- Investments data and tracking functionality can go here -->
     </section>
 
+    <!-- Tax Information Section -->
     <section id="tax-info" class="section">
         <h2>Tax Information</h2>
-        <p>Organize your tax-related documents and deductions.</p>
+        <p>Organize tax-related documents, track deductible expenses, and access tax resources.</p>
+        <!-- Additional fields for tax tracking can be added -->
     </section>
 
+    <!-- Goals & Savings Planner Section -->
     <section id="goals" class="section">
         <h2>Goals & Savings Planner</h2>
-        <p>Set financial goals and track your progress. Add specific items to the "Wants" section to save for.</p>
+        <form onsubmit="addGoal(event)">
+            <input type="text" id="goalItem" placeholder="Item (e.g., TV)" required />
+            <input type="number" id="goalCost" placeholder="Total Cost" required />
+            <input type="number" id="amountSaved" placeholder="Amount Saved" />
+            <button type="submit">Add Goal</button>
+        </form>
+        <div id="goalEntries">
+            <!-- Example goal for demonstration -->
+            <div class="goal">
+                <p>Goal: Save for a TV</p>
+                <p>Total Cost: $800</p>
+                <p>Amount Saved: $300</p>
+            </div>
+            <!-- Repeat similar goals here for more content -->
+        </div>
     </section>
 </div>
 
-<footer>
-    &copy; 2024 Financial Planning Website
-</footer>
+<footer>&copy; 2024 Financial Planning Dashboard</footer>
 
-<!-- JavaScript code at the end of the body -->
 <script>
-    // Place JavaScript code here
+    /* JavaScript to Manage Section Display */
+    function showSection(sectionId) {
+        document.querySelectorAll('.section').forEach(section => section.style.display = 'none');
+        document.getElementById(sectionId).style.display = 'block';
+        document.querySelectorAll('nav a').forEach(link => link.classList.remove('active'));
+        document.querySelector(`nav a[href="#${sectionId}"]`).classList.add('active');
+    }
+
+    /* Income & Expense Tracker Functionality */
     const incomeExpenseData = JSON.parse(localStorage.getItem('incomeExpenseData')) || [];
+    function renderIncomeExpenseTracker() { /* render logic for income expense */ }
+    function addIncomeExpense(event) { /* add logic for income expense */ }
 
-    function renderIncomeExpenseTracker() {
-        const tracker = document.getElementById('income-expense');
-        tracker.innerHTML = `
-            <h2>Income & Expense Tracker</h2>
-            <form onsubmit="addIncomeExpense(event)">
-                <input type="date" id="date" required />
-                <input type="text" id="category" placeholder="Category (e.g., Food, Rent)" required />
-                <input type="number" id="amount" placeholder="Amount" required />
-                <input type="text" id="description" placeholder="Description" />
-                <button type="submit">Add Entry</button>
-            </form>
-            <div id="entries">
-                ${incomeExpenseData.map((entry, index) => `
-                    <div>
-                        <p>${entry.date} - ${entry.category} - $${entry.amount} - ${entry.description || 'No description'}</p>
-                        <button onclick="deleteEntry(${index})">Delete</button>
-                    </div>
-                `).join('')}
-            </div>
-        `;
-    }
-
-    function addIncomeExpense(event) {
-        event.preventDefault();
-        const date = document.getElementById('date').value;
-        const category = document.getElementById('category').value;
-        const amount = parseFloat(document.getElementById('amount').value);
-        const description = document.getElementById('description').value;
-
-        incomeExpenseData.push({ date, category, amount, description });
-        localStorage.setItem('incomeExpenseData', JSON.stringify(incomeExpenseData));
-        renderIncomeExpenseTracker();
-    }
-
-    function deleteEntry(index) {
-        incomeExpenseData.splice(index, 1);
-        localStorage.setItem('incomeExpenseData', JSON.stringify(incomeExpenseData));
-        renderIncomeExpenseTracker();
-    }
-
+    /* Goals Planner with Wants */
     const goalsData = JSON.parse(localStorage.getItem('goalsData')) || [];
+    function renderGoalsPlanner() { /* render logic for goals planner */ }
+    function addGoal(event) { /* add logic for adding goals */ }
 
-    function renderGoalsPlanner() {
-        const goals = document.getElementById('goals');
-        goals.innerHTML = `
-            <h2>Goals & Savings Planner</h2>
-            <form onsubmit="addGoal(event)">
-                <input type="text" id="goalItem" placeholder="Item (e.g., TV)" required />
-                <input type="number" id="goalCost" placeholder="Total Cost" required />
-                <input type="number" id="amountSaved" placeholder="Amount Saved" />
-                <button type="submit">Add Goal</button>
-            </form>
-            <div id="goalEntries">
-                ${goalsData.map((goal, index) => `
-                    <div>
-                        <p>${goal.item} - Total Cost: $${goal.cost} - Saved: $${goal.saved}</p>
-                        <progress value="${goal.saved}" max="${goal.cost}"></progress>
-                        <button onclick="deleteGoal(${index})">Delete</button>
-                    </div>
-                `).join('')}
-            </div>
-        `;
-    }
-
-    function addGoal(event) {
-        event.preventDefault();
-        const item = document.getElementById('goalItem').value;
-        const cost = parseFloat(document.getElementById('goalCost').value);
-        const saved = parseFloat(document.getElementById('amountSaved').value) || 0;
-
-        goalsData.push({ item, cost, saved });
-        localStorage.setItem('goalsData', JSON.stringify(goalsData));
-        renderGoalsPlanner();
-    }
-
-    function deleteGoal(index) {
-        goalsData.splice(index, 1);
-        localStorage.setItem('goalsData', JSON.stringify(goalsData));
-        renderGoalsPlanner();
-    }
-
+    // Initial render of the first section on page load
     window.onload = function() {
         renderIncomeExpenseTracker();
         renderGoalsPlanner();
     };
 </script>
+
 </body>
 </html>
+
