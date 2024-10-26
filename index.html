@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comprehensive Financial Planning Dashboard</title>
+    <title>Comprehensive Financial Planning Website</title>
     <style>
         /* General Reset */
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,6 +23,8 @@
         /* Form & Button Styling */
         button { background-color: #b19cd9; border: none; padding: 10px; color: white; cursor: pointer; border-radius: 5px; }
         button:hover { background-color: #a68fc3; }
+        .btn-edit, .btn-delete { font-size: 0.8em; margin: 5px; cursor: pointer; }
+
         input[type="text"], input[type="number"], input[type="date"] {
             padding: 8px; margin: 5px; border: 1px solid #ddd; border-radius: 4px; width: 100%;
         }
@@ -30,9 +32,8 @@
         /* Footer */
         footer { background-color: #222; color: white; text-align: center; padding: 10px; position: fixed; width: 100%; bottom: 0; }
         
-        /* Extra styles for animations and interactivity */
-        .highlight { background-color: #b19cd9; color: #fff; transition: background-color 0.3s ease; }
-        .hidden { display: none; }
+        /* Highlight Active Section Link */
+        .active { color: #b19cd9; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -65,37 +66,28 @@
             <label><input type="checkbox" id="recurring" /> Recurring</label>
             <button type="submit">Add Entry</button>
         </form>
-        <div id="entries">
-            <!-- Example Entry for Extended Code Example -->
-            <div class="entry">
-                <p>Date: <span>2024-10-26</span></p>
-                <p>Category: <span>Rent</span></p>
-                <p>Amount: <span>$500</span></p>
-                <p>Recurring: <span>No</span></p>
-            </div>
-            <!-- Repeat similar entries here for more content -->
-        </div>
+        <div id="entries"></div>
     </section>
 
     <!-- Financial Calendar Section -->
     <section id="calendar" class="section">
         <h2>Financial Calendar</h2>
         <p>View and set reminders for important financial dates and deadlines.</p>
-        <!-- Calendar will be extended with JavaScript functionality -->
+        <!-- Additional fields for adding calendar events can be added here -->
     </section>
 
     <!-- Investments Section -->
     <section id="investments" class="section">
         <h2>Investments</h2>
         <p>Track your investment portfolio and monitor growth over time.</p>
-        <!-- Investments data and tracking functionality can go here -->
+        <!-- Placeholder for investment tracking entries -->
     </section>
 
     <!-- Tax Information Section -->
     <section id="tax-info" class="section">
         <h2>Tax Information</h2>
         <p>Organize tax-related documents, track deductible expenses, and access tax resources.</p>
-        <!-- Additional fields for tax tracking can be added -->
+        <!-- Placeholder for tax information management -->
     </section>
 
     <!-- Goals & Savings Planner Section -->
@@ -107,15 +99,7 @@
             <input type="number" id="amountSaved" placeholder="Amount Saved" />
             <button type="submit">Add Goal</button>
         </form>
-        <div id="goalEntries">
-            <!-- Example goal for demonstration -->
-            <div class="goal">
-                <p>Goal: Save for a TV</p>
-                <p>Total Cost: $800</p>
-                <p>Amount Saved: $300</p>
-            </div>
-            <!-- Repeat similar goals here for more content -->
-        </div>
+        <div id="goalEntries"></div>
     </section>
 </div>
 
@@ -132,15 +116,98 @@
 
     /* Income & Expense Tracker Functionality */
     const incomeExpenseData = JSON.parse(localStorage.getItem('incomeExpenseData')) || [];
-    function renderIncomeExpenseTracker() { /* render logic for income expense */ }
-    function addIncomeExpense(event) { /* add logic for income expense */ }
 
-    /* Goals Planner with Wants */
+    function renderIncomeExpenseTracker() {
+        const entriesDiv = document.getElementById('entries');
+        entriesDiv.innerHTML = '';
+        incomeExpenseData.forEach((entry, index) => {
+            entriesDiv.innerHTML += `
+                <div class="entry">
+                    <p>Date: <span>${entry.date}</span></p>
+                    <p>Category: <span>${entry.category}</span></p>
+                    <p>Amount: $<span>${entry.amount}</span></p>
+                    <p>Recurring: <span>${entry.recurring ? "Yes" : "No"}</span></p>
+                    <button onclick="editEntry(${index})" class="btn-edit">Edit</button>
+                    <button onclick="deleteEntry(${index})" class="btn-delete">Delete</button>
+                </div>
+            `;
+        });
+    }
+
+    function addIncomeExpense(event) {
+        event.preventDefault();
+        const date = document.getElementById('date').value;
+        const category = document.getElementById('category').value;
+        const amount = parseFloat(document.getElementById('amount').value);
+        const description = document.getElementById('description').value;
+        const recurring = document.getElementById('recurring').checked;
+
+        incomeExpenseData.push({ date, category, amount, description, recurring });
+        localStorage.setItem('incomeExpenseData', JSON.stringify(incomeExpenseData));
+        renderIncomeExpenseTracker();
+    }
+
+    function deleteEntry(index) {
+        incomeExpenseData.splice(index, 1);
+        localStorage.setItem('incomeExpenseData', JSON.stringify(incomeExpenseData));
+        renderIncomeExpenseTracker();
+    }
+
+    function editEntry(index) {
+        const entry = incomeExpenseData[index];
+        document.getElementById('date').value = entry.date;
+        document.getElementById('category').value = entry.category;
+        document.getElementById('amount').value = entry.amount;
+        document.getElementById('description').value = entry.description;
+        document.getElementById('recurring').checked = entry.recurring;
+        deleteEntry(index);
+    }
+
+    /* Goals Planner Functionality */
     const goalsData = JSON.parse(localStorage.getItem('goalsData')) || [];
-    function renderGoalsPlanner() { /* render logic for goals planner */ }
-    function addGoal(event) { /* add logic for adding goals */ }
 
-    // Initial render of the first section on page load
+    function renderGoalsPlanner() {
+        const goalEntriesDiv = document.getElementById('goalEntries');
+        goalEntriesDiv.innerHTML = '';
+        goalsData.forEach((goal, index) => {
+            goalEntriesDiv.innerHTML += `
+                <div class="goal">
+                    <p>Goal: <span>${goal.item}</span></p>
+                    <p>Total Cost: $<span>${goal.cost}</span></p>
+                    <p>Amount Saved: $<span>${goal.saved}</span></p>
+                    <button onclick="editGoal(${index})" class="btn-edit">Edit</button>
+                    <button onclick="deleteGoal(${index})" class="btn-delete">Delete</button>
+                </div>
+            `;
+        });
+    }
+
+    function addGoal(event) {
+        event.preventDefault();
+        const item = document.getElementById('goalItem').value;
+        const cost = parseFloat(document.getElementById('goalCost').value);
+        const saved = parseFloat(document.getElementById('amountSaved').value) || 0;
+
+        goalsData.push({ item, cost, saved });
+        localStorage.setItem('goalsData', JSON.stringify(goalsData));
+        renderGoalsPlanner();
+    }
+
+    function deleteGoal(index) {
+        goalsData.splice(index, 1);
+        localStorage.setItem('goalsData', JSON.stringify(goalsData));
+        renderGoalsPlanner();
+    }
+
+    function editGoal(index) {
+        const goal = goalsData[index];
+        document.getElementById('goalItem').value = goal.item;
+        document.getElementById('goalCost').value = goal.cost;
+        document.getElementById('amountSaved').value = goal.saved;
+        deleteGoal(index);
+    }
+
+    // Initial render of each section on page load
     window.onload = function() {
         renderIncomeExpenseTracker();
         renderGoalsPlanner();
@@ -149,4 +216,5 @@
 
 </body>
 </html>
+
 
