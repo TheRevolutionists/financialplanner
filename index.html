@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Planning Website</title>
+    <style>
+        /* Place the CSS code here */
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        /* Header Styling */
+        header {
+            background-color: #4CAF50;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.5em;
+            color: white;
+        }
+
+        /* Navigation Bar */
+        nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: #333;
+            padding: 10px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+        }
+
+        nav a:hover {
+            background-color: #4CAF50;
+        }
+
+        /* Main Content Layout */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .section {
+            max-width: 800px;
+            background-color: white;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    Financial Planning Website
+</header>
+
+<nav>
+    <a href="#home">Home</a>
+    <a href="#income-expense">Income & Expense Tracker</a>
+    <a href="#calendar">Financial Calendar</a>
+    <a href="#investments">Investments</a>
+    <a href="#tax-info">Tax Information</a>
+    <a href="#goals">Goals & Savings Planner</a>
+</nav>
+
+<div class="container">
+    <section id="home" class="section">
+        <h2>Welcome to Your Financial Planning Dashboard</h2>
+        <p>Manage your income, expenses, investments, and savings goals all in one place.</p>
+    </section>
+
+    <section id="income-expense" class="section">
+        <h2>Income & Expense Tracker</h2>
+        <p>Track your income and expenses. Add, edit, or delete entries to keep your finances organized.</p>
+    </section>
+
+    <section id="calendar" class="section">
+        <h2>Financial Calendar</h2>
+        <p>View upcoming financial events, bill due dates, and reminders.</p>
+    </section>
+
+    <section id="investments" class="section">
+        <h2>Investments</h2>
+        <p>Track your investment portfolio and analyze growth over time.</p>
+    </section>
+
+    <section id="tax-info" class="section">
+        <h2>Tax Information</h2>
+        <p>Organize your tax-related documents and deductions.</p>
+    </section>
+
+    <section id="goals" class="section">
+        <h2>Goals & Savings Planner</h2>
+        <p>Set financial goals and track your progress. Add specific items to the "Wants" section to save for.</p>
+    </section>
+</div>
+
+<footer>
+    &copy; 2024 Financial Planning Website
+</footer>
+
+<!-- JavaScript code at the end of the body -->
+<script>
+    // Place JavaScript code here
+    const incomeExpenseData = JSON.parse(localStorage.getItem('incomeExpenseData')) || [];
+
+    function renderIncomeExpenseTracker() {
+        const tracker = document.getElementById('income-expense');
+        tracker.innerHTML = `
+            <h2>Income & Expense Tracker</h2>
+            <form onsubmit="addIncomeExpense(event)">
+                <input type="date" id="date" required />
+                <input type="text" id="category" placeholder="Category (e.g., Food, Rent)" required />
+                <input type="number" id="amount" placeholder="Amount" required />
+                <input type="text" id="description" placeholder="Description" />
+                <button type="submit">Add Entry</button>
+            </form>
+            <div id="entries">
+                ${incomeExpenseData.map((entry, index) => `
+                    <div>
+                        <p>${entry.date} - ${entry.category} - $${entry.amount} - ${entry.description || 'No description'}</p>
+                        <button onclick="deleteEntry(${index})">Delete</button>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    function addIncomeExpense(event) {
+        event.preventDefault();
+        const date = document.getElementById('date').value;
+        const category = document.getElementById('category').value;
+        const amount = parseFloat(document.getElementById('amount').value);
+        const description = document.getElementById('description').value;
+
+        incomeExpenseData.push({ date, category, amount, description });
+        localStorage.setItem('incomeExpenseData', JSON.stringify(incomeExpenseData));
+        renderIncomeExpenseTracker();
+    }
+
+    function deleteEntry(index) {
+        incomeExpenseData.splice(index, 1);
+        localStorage.setItem('incomeExpenseData', JSON.stringify(incomeExpenseData));
+        renderIncomeExpenseTracker();
+    }
+
+    const goalsData = JSON.parse(localStorage.getItem('goalsData')) || [];
+
+    function renderGoalsPlanner() {
+        const goals = document.getElementById('goals');
+        goals.innerHTML = `
+            <h2>Goals & Savings Planner</h2>
+            <form onsubmit="addGoal(event)">
+                <input type="text" id="goalItem" placeholder="Item (e.g., TV)" required />
+                <input type="number" id="goalCost" placeholder="Total Cost" required />
+                <input type="number" id="amountSaved" placeholder="Amount Saved" />
+                <button type="submit">Add Goal</button>
+            </form>
+            <div id="goalEntries">
+                ${goalsData.map((goal, index) => `
+                    <div>
+                        <p>${goal.item} - Total Cost: $${goal.cost} - Saved: $${goal.saved}</p>
+                        <progress value="${goal.saved}" max="${goal.cost}"></progress>
+                        <button onclick="deleteGoal(${index})">Delete</button>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    function addGoal(event) {
+        event.preventDefault();
+        const item = document.getElementById('goalItem').value;
+        const cost = parseFloat(document.getElementById('goalCost').value);
+        const saved = parseFloat(document.getElementById('amountSaved').value) || 0;
+
+        goalsData.push({ item, cost, saved });
+        localStorage.setItem('goalsData', JSON.stringify(goalsData));
+        renderGoalsPlanner();
+    }
+
+    function deleteGoal(index) {
+        goalsData.splice(index, 1);
+        localStorage.setItem('goalsData', JSON.stringify(goalsData));
+        renderGoalsPlanner();
+    }
+
+    window.onload = function() {
+        renderIncomeExpenseTracker();
+        renderGoalsPlanner();
+    };
+</script>
+</body>
+</html>
