@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comprehensive Financial Planning Website</title>
+    <title>Comprehensive Financial Planning Dashboard</title>
     <style>
         /* General Reset */
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,8 +23,6 @@
         /* Form & Button Styling */
         button { background-color: #b19cd9; border: none; padding: 10px; color: white; cursor: pointer; border-radius: 5px; }
         button:hover { background-color: #a68fc3; }
-        .btn-edit, .btn-delete { font-size: 0.8em; margin: 5px; cursor: pointer; }
-
         input[type="text"], input[type="number"], input[type="date"] {
             padding: 8px; margin: 5px; border: 1px solid #ddd; border-radius: 4px; width: 100%;
         }
@@ -32,8 +30,9 @@
         /* Footer */
         footer { background-color: #222; color: white; text-align: center; padding: 10px; position: fixed; width: 100%; bottom: 0; }
         
-        /* Highlight Active Section Link */
-        .active { color: #b19cd9; font-weight: bold; }
+        /* Extra styles for animations and interactivity */
+        .highlight { background-color: #b19cd9; color: #fff; transition: background-color 0.3s ease; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
@@ -66,28 +65,30 @@
             <label><input type="checkbox" id="recurring" /> Recurring</label>
             <button type="submit">Add Entry</button>
         </form>
-        <div id="entries"></div>
+        <div id="entries">
+            <!-- Entries will display here -->
+        </div>
     </section>
 
     <!-- Financial Calendar Section -->
     <section id="calendar" class="section">
         <h2>Financial Calendar</h2>
         <p>View and set reminders for important financial dates and deadlines.</p>
-        <!-- Additional fields for adding calendar events can be added here -->
+        <!-- Calendar entries could be added here -->
     </section>
 
     <!-- Investments Section -->
     <section id="investments" class="section">
         <h2>Investments</h2>
         <p>Track your investment portfolio and monitor growth over time.</p>
-        <!-- Placeholder for investment tracking entries -->
+        <!-- Investment entries and charts could be added here -->
     </section>
 
     <!-- Tax Information Section -->
     <section id="tax-info" class="section">
         <h2>Tax Information</h2>
         <p>Organize tax-related documents, track deductible expenses, and access tax resources.</p>
-        <!-- Placeholder for tax information management -->
+        <!-- Tax tracking could be added here -->
     </section>
 
     <!-- Goals & Savings Planner Section -->
@@ -99,36 +100,37 @@
             <input type="number" id="amountSaved" placeholder="Amount Saved" />
             <button type="submit">Add Goal</button>
         </form>
-        <div id="goalEntries"></div>
+        <div id="goalEntries">
+            <!-- Goal entries will display here -->
+        </div>
     </section>
 </div>
 
 <footer>&copy; 2024 Financial Planning Dashboard</footer>
 
 <script>
-    /* JavaScript to Manage Section Display */
+    /* Function to Display the Selected Section */
     function showSection(sectionId) {
         document.querySelectorAll('.section').forEach(section => section.style.display = 'none');
         document.getElementById(sectionId).style.display = 'block';
-        document.querySelectorAll('nav a').forEach(link => link.classList.remove('active'));
-        document.querySelector(`nav a[href="#${sectionId}"]`).classList.add('active');
     }
 
-    /* Income & Expense Tracker Functionality */
-    const incomeExpenseData = JSON.parse(localStorage.getItem('incomeExpenseData')) || [];
-
+    /* Income & Expense Tracker */
+    let incomeExpenseData = JSON.parse(localStorage.getItem('incomeExpenseData')) || [];
+    
     function renderIncomeExpenseTracker() {
-        const entriesDiv = document.getElementById('entries');
-        entriesDiv.innerHTML = '';
+        const entriesDiv = document.getElementById("entries");
+        entriesDiv.innerHTML = "";
         incomeExpenseData.forEach((entry, index) => {
             entriesDiv.innerHTML += `
                 <div class="entry">
-                    <p>Date: <span>${entry.date}</span></p>
-                    <p>Category: <span>${entry.category}</span></p>
-                    <p>Amount: $<span>${entry.amount}</span></p>
-                    <p>Recurring: <span>${entry.recurring ? "Yes" : "No"}</span></p>
-                    <button onclick="editEntry(${index})" class="btn-edit">Edit</button>
-                    <button onclick="deleteEntry(${index})" class="btn-delete">Delete</button>
+                    <p>Date: ${entry.date}</p>
+                    <p>Category: ${entry.category}</p>
+                    <p>Amount: $${entry.amount}</p>
+                    <p>Description: ${entry.description}</p>
+                    <p>Recurring: ${entry.recurring ? "Yes" : "No"}</p>
+                    <button onclick="editIncomeExpense(${index})">Edit</button>
+                    <button onclick="deleteIncomeExpense(${index})">Delete</button>
                 </div>
             `;
         });
@@ -136,47 +138,47 @@
 
     function addIncomeExpense(event) {
         event.preventDefault();
-        const date = document.getElementById('date').value;
-        const category = document.getElementById('category').value;
-        const amount = parseFloat(document.getElementById('amount').value);
-        const description = document.getElementById('description').value;
-        const recurring = document.getElementById('recurring').checked;
-
+        const date = document.getElementById("date").value;
+        const category = document.getElementById("category").value;
+        const amount = document.getElementById("amount").value;
+        const description = document.getElementById("description").value;
+        const recurring = document.getElementById("recurring").checked;
+        
         incomeExpenseData.push({ date, category, amount, description, recurring });
-        localStorage.setItem('incomeExpenseData', JSON.stringify(incomeExpenseData));
+        localStorage.setItem("incomeExpenseData", JSON.stringify(incomeExpenseData));
         renderIncomeExpenseTracker();
     }
 
-    function deleteEntry(index) {
-        incomeExpenseData.splice(index, 1);
-        localStorage.setItem('incomeExpenseData', JSON.stringify(incomeExpenseData));
-        renderIncomeExpenseTracker();
-    }
-
-    function editEntry(index) {
+    function editIncomeExpense(index) {
         const entry = incomeExpenseData[index];
-        document.getElementById('date').value = entry.date;
-        document.getElementById('category').value = entry.category;
-        document.getElementById('amount').value = entry.amount;
-        document.getElementById('description').value = entry.description;
-        document.getElementById('recurring').checked = entry.recurring;
-        deleteEntry(index);
+        document.getElementById("date").value = entry.date;
+        document.getElementById("category").value = entry.category;
+        document.getElementById("amount").value = entry.amount;
+        document.getElementById("description").value = entry.description;
+        document.getElementById("recurring").checked = entry.recurring;
+        deleteIncomeExpense(index);
     }
 
-    /* Goals Planner Functionality */
-    const goalsData = JSON.parse(localStorage.getItem('goalsData')) || [];
+    function deleteIncomeExpense(index) {
+        incomeExpenseData.splice(index, 1);
+        localStorage.setItem("incomeExpenseData", JSON.stringify(incomeExpenseData));
+        renderIncomeExpenseTracker();
+    }
 
+    /* Goals & Savings Planner */
+    let goalsData = JSON.parse(localStorage.getItem("goalsData")) || [];
+    
     function renderGoalsPlanner() {
-        const goalEntriesDiv = document.getElementById('goalEntries');
-        goalEntriesDiv.innerHTML = '';
+        const goalEntriesDiv = document.getElementById("goalEntries");
+        goalEntriesDiv.innerHTML = "";
         goalsData.forEach((goal, index) => {
             goalEntriesDiv.innerHTML += `
                 <div class="goal">
-                    <p>Goal: <span>${goal.item}</span></p>
-                    <p>Total Cost: $<span>${goal.cost}</span></p>
-                    <p>Amount Saved: $<span>${goal.saved}</span></p>
-                    <button onclick="editGoal(${index})" class="btn-edit">Edit</button>
-                    <button onclick="deleteGoal(${index})" class="btn-delete">Delete</button>
+                    <p>Goal: ${goal.item}</p>
+                    <p>Total Cost: $${goal.cost}</p>
+                    <p>Amount Saved: $${goal.saved}</p>
+                    <button onclick="editGoal(${index})">Edit</button>
+                    <button onclick="deleteGoal(${index})">Delete</button>
                 </div>
             `;
         });
@@ -184,30 +186,29 @@
 
     function addGoal(event) {
         event.preventDefault();
-        const item = document.getElementById('goalItem').value;
-        const cost = parseFloat(document.getElementById('goalCost').value);
-        const saved = parseFloat(document.getElementById('amountSaved').value) || 0;
-
+        const item = document.getElementById("goalItem").value;
+        const cost = document.getElementById("goalCost").value;
+        const saved = document.getElementById("amountSaved").value;
+        
         goalsData.push({ item, cost, saved });
-        localStorage.setItem('goalsData', JSON.stringify(goalsData));
-        renderGoalsPlanner();
-    }
-
-    function deleteGoal(index) {
-        goalsData.splice(index, 1);
-        localStorage.setItem('goalsData', JSON.stringify(goalsData));
+        localStorage.setItem("goalsData", JSON.stringify(goalsData));
         renderGoalsPlanner();
     }
 
     function editGoal(index) {
         const goal = goalsData[index];
-        document.getElementById('goalItem').value = goal.item;
-        document.getElementById('goalCost').value = goal.cost;
-        document.getElementById('amountSaved').value = goal.saved;
+        document.getElementById("goalItem").value = goal.item;
+        document.getElementById("goalCost").value = goal.cost;
+        document.getElementById("amountSaved").value = goal.saved;
         deleteGoal(index);
     }
 
-    // Initial render of each section on page load
+    function deleteGoal(index) {
+        goalsData.splice(index, 1);
+        localStorage.setItem("goalsData", JSON.stringify(goalsData));
+        renderGoalsPlanner();
+    }
+
     window.onload = function() {
         renderIncomeExpenseTracker();
         renderGoalsPlanner();
@@ -216,5 +217,3 @@
 
 </body>
 </html>
-
-
