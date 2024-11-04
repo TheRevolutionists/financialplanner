@@ -1,35 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transactions</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <h2>finance</h2>
-            <nav>
-                <ul>
-                    <li><a href="index.html">Overview</a></li>
-                    <li><a href="transactions.html">Transactions</a></li>
-                    <li><a href="budgets.html">Budgets</a></li>
-                    <li><a href="pots.html">Pots</a></li>
-                    <li><a href="recurring-bills.html">Recurring Bills</a></li>
-                </ul>
-            </nav>
-        </aside>
-        <!-- Main Content -->
-        <main class="main-content">
-            <section class="transactions">
-                <h2>Transactions</h2>
-                <!-- Transactions content here -->
-            </section>
-        </main>
-    </div>
-    <script src="scripts.js"></script>
-</body>
-</html>
+// Transactions Page Functionality
+document.addEventListener('DOMContentLoaded', function () {
+    if (document.querySelector('.transactions')) {
+        let transactions = loadData('transactions');
+        displayTransactions(transactions);
+
+        function displayTransactions(transactions) {
+            const transactionsList = document.getElementById('transactionsList');
+            transactionsList.innerHTML = '';
+            transactions.forEach(tx => {
+                const item = document.createElement('p');
+                item.textContent = `${tx.date} - ${tx.name}: $${tx.amount}`;
+                transactionsList.appendChild(item);
+            });
+        }
+
+        window.addTransaction = function () {
+            const name = prompt('Enter the transaction name:');
+            const amount = prompt('Enter the transaction amount:');
+            const date = prompt('Enter the transaction date (YYYY-MM-DD):');
+            if (name && amount && date) {
+                transactions.push({ name, amount: parseFloat(amount), date });
+                saveData('transactions', transactions);
+                displayTransactions(transactions);
+            }
+        };
+    }
+});
