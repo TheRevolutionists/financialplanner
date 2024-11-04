@@ -98,3 +98,16 @@ function checkRecurringBills() {
     });
 }
 document.addEventListener('DOMContentLoaded', checkRecurringBills);
+function displayBudgetProgress(budgets) {
+    const container = document.getElementById('budgetProgressContainer');
+    container.innerHTML = '';
+    budgets.forEach(budget => {
+        const progressBar = document.createElement('div');
+        progressBar.className = 'budget-progress-bar';
+        const progress = document.createElement('div');
+        progress.style.width = `${(budget.currentAmount / budget.amount) * 100}%`;
+        progress.textContent = `${budget.name} (${budget.currentAmount}/${budget.amount})`;
+        progressBar.appendChild(progress);
+        container.appendChild(progressBar);
+    });
+}
