@@ -48,3 +48,53 @@ function addRecurringBill() {
         billsList.appendChild(item);
     }
 }
+// Function to save budgets, pots, and bills
+function saveData(key, data) {
+    localStorage.setItem(key, JSON.stringify(data));
+}
+
+// Function to load data
+function loadData(key) {
+    const data = localStorage.getItem(key);
+    return data ? JSON.parse(data) : [];
+}
+
+// Example usage for budgets
+document.addEventListener('DOMContentLoaded', function () {
+    if (document.querySelector('.budgets')) {
+        let budgets = loadData('budgets');
+        displayBudgets(budgets);
+
+        // Add a function to display budgets
+        function displayBudgets(budgets) {
+            const budgetList = document.getElementById('budgetList');
+            budgetList.innerHTML = ''; // Clear existing list
+            budgets.forEach(budget => {
+                const item = document.createElement('p');
+                item.textContent = `${budget.name}: $${budget.amount}`;
+                budgetList.appendChild(item);
+            });
+        }
+
+        // Add new budget functionality
+        document.getElementById('addBudget')?.addEventListener('click', function () {
+            const name = prompt('Enter budget name:');
+            const amount = prompt('Enter budget amount:');
+            if (name && amount) {
+                budgets.push({ name, amount });
+                saveData('budgets', budgets);
+                displayBudgets(budgets);
+            }
+        });
+    }
+});
+function checkRecurringBills() {
+    const bills = loadData('recurringBills');
+    const today = new Date().toISOString().split('T')[0];
+    bills.forEach(bill => {
+        if (bill.dueDate === today) {
+            alert(`Reminder: Your bill for ${bill.name} is due today!`);
+        }
+    });
+}
+document.addEventListener('DOMContentLoaded', checkRecurringBills);
