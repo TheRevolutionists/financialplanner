@@ -264,15 +264,4 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        window.addTransaction = function () {
-            const name = prompt('Enter the transaction name:');
-            const amount = prompt('Enter the transaction amount:');
-            const date = prompt('Enter the transaction date (YYYY-MM-DD):');
-            if (name && amount && date) {
-                transactions.push({ name, amount: parseFloat(amount), date });
-                saveData('transactions', transactions);
-                displayTransactions(transactions);
-            }
-        };
-    }
-});
+        
