@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pots</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2>finance</h2>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Overview</a></li>
+                    <li><a href="transactions.html">Transactions</a></li>
+                    <li><a href="budgets.html">Budgets</a></li>
+                    <li class="active"><a href="pots.html">Pots</a></li>
+                    <li><a href="recurring-bills.html">Recurring Bills</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <!-- Main Content -->
+        <main class="main-content">
+            <section class="pots">
+                <h2>Pots</h2>
+                <div id="potsList"></div>
+                <button onclick="addPot()">Add New Pot</button>
+            </section>
+        </main>
+    </div>
+    <script src="scripts.js"></script>
+</body>
+</html>
