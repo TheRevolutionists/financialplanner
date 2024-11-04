@@ -248,3 +248,31 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     }
 });
+// Transactions Page Functionality
+document.addEventListener('DOMContentLoaded', function () {
+    if (document.querySelector('.transactions')) {
+        let transactions = loadData('transactions');
+        displayTransactions(transactions);
+
+        function displayTransactions(transactions) {
+            const transactionsList = document.getElementById('transactionsList');
+            transactionsList.innerHTML = '';
+            transactions.forEach(tx => {
+                const item = document.createElement('p');
+                item.textContent = `${tx.date} - ${tx.name}: $${tx.amount}`;
+                transactionsList.appendChild(item);
+            });
+        }
+
+        window.addTransaction = function () {
+            const name = prompt('Enter the transaction name:');
+            const amount = prompt('Enter the transaction amount:');
+            const date = prompt('Enter the transaction date (YYYY-MM-DD):');
+            if (name && amount && date) {
+                transactions.push({ name, amount: parseFloat(amount), date });
+                saveData('transactions', transactions);
+                displayTransactions(transactions);
+            }
+        };
+    }
+});
