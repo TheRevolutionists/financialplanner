@@ -62,36 +62,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 displayBudgets(budgets);
             }
         });
-
-        displayBudgetProgress(budgets);
-        checkBudgetExceeded(budgets);
     }
 });
-
-// Budget Progress Bars
-function displayBudgetProgress(budgets) {
-    const container = document.getElementById('budgetProgressContainer');
-    if (container) {
-        container.innerHTML = '';
-        budgets.forEach(budget => {
-            const progressBar = document.createElement('div');
-            progressBar.className = 'budget-progress-bar';
-            const progress = document.createElement('div');
-            progress.style.width = `${(budget.currentAmount / budget.amount) * 100}%`;
-            progress.textContent = `${budget.name} (${budget.currentAmount}/${budget.amount})`;
-            progressBar.appendChild(progress);
-            container.appendChild(progressBar);
-        });
-    }
-}
-
-function checkBudgetExceeded(budgets) {
-    budgets.forEach(budget => {
-        if (budget.currentAmount > budget.amount) {
-            alert(`Alert: You have exceeded your budget for ${budget.name}!`);
-        }
-    });
-}
 
 // Pots Page Functionality
 document.addEventListener('DOMContentLoaded', function () {
@@ -147,107 +119,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 displayBills(bills);
             }
         };
-
-        checkRecurringBills();
     }
 });
 
-// Recurring Bill Notifications
-function checkRecurringBills() {
-    const bills = loadData('recurringBills');
-    const today = new Date().toISOString().split('T')[0];
-    bills.forEach(bill => {
-        if (bill.dueDate === today) {
-            alert(`Reminder: Your bill for ${bill.name} is due today!`);
-        }
-    });
-}
-
-// Spending Trends and Analytics
-document.addEventListener('DOMContentLoaded', function () {
-    if (document.querySelector('#spendingTrendsChart')) {
-        const ctx = document.getElementById('spendingTrendsChart').getContext('2d');
-        const spendingData = loadData('transactions');
-        const monthlyData = aggregateMonthlyData(spendingData);
-
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: monthlyData.labels,
-                datasets: [{
-                    label: 'Monthly Spending',
-                    data: monthlyData.values,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            }
-        });
-
-        function aggregateMonthlyData(transactions) {
-            const months = {};
-            transactions.forEach(tx => {
-                const month = new Date(tx.date).toLocaleString('default', { month: 'short', year: 'numeric' });
-                months[month] = (months[month] || 0) + tx.amount;
-            });
-            return {
-                labels: Object.keys(months),
-                values: Object.values(months)
-            };
-        }
-    }
-});
-
-// Achievements
-function checkAchievements() {
-    const totalSavings = loadData('pots').reduce((sum, pot) => sum + parseFloat(pot.amount), 0);
-    const achievements = [];
-
-    if (totalSavings >= 1000) achievements.push('Saved $1,000');
-    if (totalSavings >= 5000) achievements.push('Saved $5,000');
-    if (totalSavings >= 10000) achievements.push('Saved $10,000');
-
-    const achievementList = document.getElementById('achievementList');
-    if (achievementList) {
-        achievementList.innerHTML = '';
-        achievements.forEach(ach => {
-            const item = document.createElement('p');
-            item.textContent = ach;
-            achievementList.appendChild(item);
-        });
-    }
-}
-document.addEventListener('DOMContentLoaded', checkAchievements);
-
-// Investment Tracking
-document.addEventListener('DOMContentLoaded', function () {
-    if (document.querySelector('.investments')) {
-        let investments = loadData('investments');
-        displayInvestments(investments);
-
-        function displayInvestments(investments) {
-            const portfolioOverview = document.getElementById('portfolioOverview');
-            if (portfolioOverview) {
-                portfolioOverview.innerHTML = '';
-                investments.forEach(inv => {
-                    const item = document.createElement('p');
-                    item.textContent = `${inv.name}: $${inv.amount}`;
-                    portfolioOverview.appendChild(item);
-                });
-            }
-        }
-
-        window.addInvestment = function () {
-            const name = prompt('Enter the name of the investment:');
-            const amount = prompt('Enter the amount invested:');
-            if (name && amount) {
-                investments.push({ name, amount: parseFloat(amount) });
-                saveData('investments', investments);
-                displayInvestments(investments);
-            }
-        };
-    }
-});
 // Transactions Page Functionality
 document.addEventListener('DOMContentLoaded', function () {
     if (document.querySelector('.transactions')) {
@@ -264,4 +138,15 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        
+        window.addTransaction = function () {
+            const name = prompt('Enter the transaction name:');
+            const amount = prompt('Enter the transaction amount:');
+            const date = prompt('Enter the transaction date (YYYY-MM-DD):');
+            if (name && amount && date) {
+                transactions.push({ name, amount: parseFloat(amount), date });
+                saveData('transactions', transactions);
+                displayTransactions(transactions);
+            }
+        };
+    }
+});
