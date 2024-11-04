@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budgets</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2>finance</h2>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Overview</a></li>
+                    <li><a href="transactions.html">Transactions</a></li>
+                    <li class="active"><a href="budgets.html">Budgets</a></li>
+                    <li><a href="pots.html">Pots</a></li>
+                    <li><a href="recurring-bills.html">Recurring Bills</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <!-- Main Content -->
+        <main class="main-content">
+            <section class="budgets">
+                <h2>Budgets</h2>
+                <canvas id="budgetChart"></canvas>
+                <div id="budgetList"></div>
+            </section>
+        </main>
+    </div>
+    <script src="scripts.js"></script>
+</body>
+</html>
