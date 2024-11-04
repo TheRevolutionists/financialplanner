@@ -4,77 +4,33 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Finance Dashboard</title>
+    <title>Overview</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
+        <!-- Sidebar -->
         <aside class="sidebar">
             <h2>finance</h2>
             <nav>
                 <ul>
-                    <li class="active"><a href="#">Overview</a></li>
-                    <li><a href="#">Transactions</a></li>
-                    <li><a href="#">Budgets</a></li>
-                    <li><a href="#">Pots</a></li>
-                    <li><a href="#">Recurring Bills</a></li>
+                    <li><a href="index.html">Overview</a></li>
+                    <li><a href="transactions.html">Transactions</a></li>
+                    <li><a href="budgets.html">Budgets</a></li>
+                    <li><a href="pots.html">Pots</a></li>
+                    <li><a href="recurring-bills.html">Recurring Bills</a></li>
                 </ul>
             </nav>
         </aside>
-
+        <!-- Main Content -->
         <main class="main-content">
             <section class="overview">
                 <h2>Overview</h2>
-                <div class="summary-cards">
-                    <div class="card">
-                        <h3>Current Balance</h3>
-                        <p>$4,836.00</p>
-                    </div>
-                    <div class="card">
-                        <h3>Income</h3>
-                        <p>$3,814.25</p>
-                    </div>
-                    <div class="card">
-                        <h3>Expenses</h3>
-                        <p>$1,700.50</p>
-                    </div>
-                </div>
-                <div class="details">
-                    <div class="pots">
-                        <h3>Pots</h3>
-                        <p>Total Saved: $850</p>
-                        <ul>
-                            <li>Rainy Day: $190</li>
-                            <li>Groceries: $40</li>
-                            <li>Other: $620</li>
-                        </ul>
-                    </div>
-                    <div class="budgets">
-                        <h3>Budgets</h3>
-                        <canvas id="budgetChart"></canvas>
-                    </div>
-                </div>
-                <div class="transactions">
-                    <h3>Transactions</h3>
-                    <ul>
-                        <li>Emma Richardson: +$75.00</li>
-                        <li>Savvy Bite Bistro: -$65.50</li>
-                        <li>Daniel Carter: -$42.30</li>
-                        <li>Sam Park: +$19.45</li>
-                        <li>Urban Services Hub: -$10.00</li>
-                    </ul>
-                </div>
-                <div class="recurring-bills">
-                    <h3>Recurring Bills</h3>
-                    <ul>
-                        <li>Phone Bill: $100.00</li>
-                        <li>Total Insurance: $95.00</li>
-                        <li>Gas: $56.00</li>
-                    </ul>
-                </div>
+                <!-- Overview content here -->
             </section>
         </main>
     </div>
     <script src="scripts.js"></script>
 </body>
 </html>
+
